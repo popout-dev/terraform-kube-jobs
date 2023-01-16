@@ -1,0 +1,55 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.prefix }}-apply-job
+  annotations:
+    helm.sh/hook-weight: "10"
+    helm.sh/hook: pre-install
+    helm.sh/hook-delete-policy: hook-succeeded, hook-failed
+spec:
+  template:
+    spec:
+      serviceAccountName: {{ .Values.prefix }}-apply-sa
+      containers:
+      - name: terraform
+        image: ghcr.io/popout-dev/terraform-kube-jobs:{{ .Values.terraform.tag }}
+        env:
+        - name: TF_SRC_DIR
+          value: {{ .Values.terraform.sourceDir }}
+        - name: TF_DEST_DIR
+          value: {{ .Values.terraform.destDir }}
+        - name: TF_ACTION
+          value: APPLY
+        - name: TF_INSTALL_VERSION
+          value: {{ .Values.terraform.version }}
+      {{- range $k, $v := .Values.terraform.envs}}
+        - name: {{ $v.name }}
+          value: {{ $v.value }}
+      {{- end }}
+        volumeMounts:
+        - name: terraform-files
+          mountPath: {{ .Values.terraform.sourceDir }}
+      {{- range $k, $v := .Values.terraform.configs }}
+        - name: {{ $v.name }}
+          mountPath: {{ $v.mountPath }}
+      {{- end }}
+      {{- range $k, $v := .Values.terraform.secrets }}
+        - name: {{ $v.name }}
+          mountPath: {{ $v.mountPath }}
+      {{- end }}      
+      volumes:
+        - name: terraform-files
+          configMap:
+            name: {{ .Values.terraform.tfFileConfigMap }}
+      {{- range $k, $v := .Values.terraform.configs }}
+        - name: {{ $v.name }}
+          configMap:
+            name: {{ $v.configMapName }}
+      {{- end }}
+      {{- range $k, $v := .Values.terraform.secrets }}
+        - name: {{ $v.name }}
+          secret:
+            secretName: {{ $v.secretName }}
+      {{- end }}  
+      restartPolicy: Never    
+  backoffLimit: {{ .Values.job.backoffLimit}}

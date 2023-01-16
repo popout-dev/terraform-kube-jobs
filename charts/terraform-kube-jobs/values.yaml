@@ -1,0 +1,27 @@
+prefix: terraform-jobs
+
+terraform:
+  tag: "6219c5c"
+  version: "1.3.7"
+  sourceDir: /resources
+  destDir: /terraform
+  tfFileConfigMap: terraform-configs
+
+  envs: {}
+    # test:
+    #   name: TF_TEST
+    #   value: test
+  
+  configs: {}
+    # mtls:
+    #   name: mtls
+    #   mountPath: /mtls
+    #   configMapName: terraform-mtls
+
+  secrets: {}
+    # mtls-secret:
+    #   name: mtls-secret
+    #   mountPath: /mtls-secret
+    #   secretName: terraform-mtls
+job:
+  backoffLimit: 5
