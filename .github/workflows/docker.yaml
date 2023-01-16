@@ -6,8 +6,11 @@ jobs:
     name: Build and Push
     runs-on: ubuntu-latest
     steps:
-      - name: Set Up Go
-        uses: actions/setup-go@v2
+      - name: checkout code
+        uses: actions/checkout@v1
+
+      - name: asdf install
+        uses: asdf-vm/actions/install@v1
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2

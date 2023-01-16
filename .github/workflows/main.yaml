@@ -8,3 +8,7 @@ on:
 jobs:
   unit-test:
     uses: ./.github/workflows/unit.yaml
+
+  build-and-deploy:
+    needs: unit-test
+    uses: ./.github/workflows/docker.yaml
