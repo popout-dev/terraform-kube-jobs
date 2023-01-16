@@ -9,6 +9,10 @@ jobs:
   unit-test:
     uses: ./.github/workflows/unit.yaml
 
-  build-and-deploy:
+  docker-build-and-deploy:
     needs: unit-test
     uses: ./.github/workflows/docker.yaml
+
+  helm-deploy:
+    needs: unit-test
+    uses: ./.github/workflows/helm.yaml
