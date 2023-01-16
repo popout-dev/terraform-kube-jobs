@@ -4,4 +4,4 @@ WORKDIR /terraform
 
 COPY ./terra-kube-jobs .
 
-ENTRYPOINT [ "terra-kube-jobs" ]
+ENTRYPOINT [ "./terra-kube-jobs" ]
