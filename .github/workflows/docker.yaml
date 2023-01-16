@@ -26,7 +26,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Build Binary
-        run: go build main.go -o terra-kube-jobs
+        run: go build -o terra-kube-jobs main.go
 
       - name: Set SHA Hash
         id: sha
