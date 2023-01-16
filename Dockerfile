@@ -1,3 +1,7 @@
 FROM debian:bullseye-slim
 
-COPY ./ dest
+WORKDIR /terraform
+
+COPY ./terra-kube-jobs .
+
+ENTRYPOINT [ "terra-kube-jobs" ]
