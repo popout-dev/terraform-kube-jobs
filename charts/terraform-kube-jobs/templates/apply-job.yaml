@@ -3,9 +3,9 @@ kind: Job
 metadata:
   name: {{ .Values.prefix }}-apply-job
   annotations:
-    helm.sh/hook-weight: "10"
-    helm.sh/hook: pre-install
-    helm.sh/hook-delete-policy: hook-succeeded, hook-failed
+    {{- range $k, $v := .Values.apply.phaseTwo.annotations }}
+    {{ $k }} : {{ $v }}
+    {{- end }}
 spec:
   template:
     spec:
@@ -22,18 +22,18 @@ spec:
           value: APPLY
         - name: TF_INSTALL_VERSION
           value: {{ .Values.terraform.version }}
-      {{- range $k, $v := .Values.terraform.envs}}
+      {{- range $v := .Values.terraform.envs}}
         - name: {{ $v.name }}
           value: {{ $v.value }}
       {{- end }}
         volumeMounts:
         - name: terraform-files
           mountPath: {{ .Values.terraform.sourceDir }}
-      {{- range $k, $v := .Values.terraform.configs }}
+      {{- range $v := .Values.terraform.configs }}
         - name: {{ $v.name }}
           mountPath: {{ $v.mountPath }}
       {{- end }}
-      {{- range $k, $v := .Values.terraform.secrets }}
+      {{- range $v := .Values.terraform.secrets }}
         - name: {{ $v.name }}
           mountPath: {{ $v.mountPath }}
       {{- end }}      
@@ -41,12 +41,12 @@ spec:
         - name: terraform-files
           configMap:
             name: {{ .Values.terraform.tfFileConfigMap }}
-      {{- range $k, $v := .Values.terraform.configs }}
+      {{- range $v := .Values.terraform.configs }}
         - name: {{ $v.name }}
           configMap:
             name: {{ $v.configMapName }}
       {{- end }}
-      {{- range $k, $v := .Values.terraform.secrets }}
+      {{- range $v := .Values.terraform.secrets }}
         - name: {{ $v.name }}
           secret:
             secretName: {{ $v.secretName }}

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.prefix }}-destroy-cm
+  annotations:
+    {{- range $k, $v := .Values.destroy.phaseOne.annotations }}
+    {{ $k }} : {{ $v }}
+    {{- end }}
+binaryData:
+  {{- range $k, $v := .Values.terraform.files }}
+  {{ $k }} : {{ $v }}
+  {{- end }}

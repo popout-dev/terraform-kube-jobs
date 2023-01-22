@@ -7,21 +7,46 @@ terraform:
   destDir: /terraform
   tfFileConfigMap: terraform-configs
 
-  envs: {}
-    # test:
-    #   name: TF_TEST
-    #   value: test
+  envs: []
+    # -  name: TF_TEST
+    #    value: test
   
-  configs: {}
-    # mtls:
-    #   name: mtls
+  configs: []
+    # - name: mtls
     #   mountPath: /mtls
     #   configMapName: terraform-mtls
 
-  secrets: {}
-    # mtls-secret:
-    #   name: mtls-secret
+  secrets: []
+    # - name: mtls-secret
     #   mountPath: /mtls-secret
     #   secretName: terraform-mtls
+
+  files: {}
+    # main.tf: dGVycmFmb3JtIHsKICBiYWNrZW5kICJrdWJlcm5ldGVzIiB7CiAgICBzZWNyZXRfc3VmZml4ICAgICA9ICJhdXRoLXNlcnZpY2UiCiAgICBpbl9jbHVzdGVyX2NvbmZpZyA9IHRydWUKICAgIG5hbWVzcGFjZSAgICAgICAgID0gImFwcCIKICB9CgogIHJlcXVpcmVkX3Byb3ZpZGVycyB7CiAgICBqZXRzdHJlYW0gPSB7CiAgICAgIHNvdXJjZSAgPSAibmF0cy1pby9qZXRzdHJlYW0iCiAgICAgIHZlcnNpb24gPSAiMC4wLjM0IgogICAgfQogIH0KfQoKcHJvdmlkZXIgImpldHN0cmVhbSIgewogIHNlcnZlcnMgPSB2YXIubmF0c19zZXJ2ZXJzCgogIHRscyB7CiAgICBjYV9maWxlX2RhdGEgPSB2YXIubmF0c19jYV9wYXRoCiAgfQp9CgoKCnJlc291cmNlICJqZXRzdHJlYW1fa3ZfYnVja2V0IiAibG9naW5fc2Vzc2lvbnMiIHsKICBuYW1lICAgID0gImxvZ2luX3Nlc3Npb25zIgogIGhpc3RvcnkgPSA1CiAgdHRsICAgICA9IDg2NDAwCn0KCgp2YXJpYWJsZSAibmF0c19zZXJ2ZXJzIiB7CiAgdHlwZSA9IHN0cmluZwp9Cgp2YXJpYWJsZSAibmF0c19jYV9wYXRoIiB7CiAgdHlwZSA9IHN0cmluZwp9Cg==
+
 job:
   backoffLimit: 5
+
+apply:
+  phaseOne:
+    annotations:
+      helm.sh/hook-weight: "5"
+      helm.sh/hook: pre-install
+      helm.sh/hook-delete-policy: hook-succeeded, hook-failed, before-hook-creation
+  phaseTwo:
+    annotations:
+      helm.sh/hook-weight: "10"
+      helm.sh/hook: pre-install
+      helm.sh/hook-delete-policy: hook-succeeded, hook-failed, before-hook-creation
+    
+destroy:
+  phaseOne:
+    annotations:
+      helm.sh/hook-weight: "5"
+      helm.sh/hook: pre-delete
+      helm.sh/hook-delete-policy: hook-succeeded, hook-failed, before-hook-creation
+  phaseTwo:
+    annotations:
+      helm.sh/hook-weight: "10"
+      helm.sh/hook: pre-delete
+      helm.sh/hook-delete-policy: hook-succeeded, hook-failed, before-hook-creation
