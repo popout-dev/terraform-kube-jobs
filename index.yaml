@@ -3,6 +3,16 @@ entries:
   terraform-jobs:
   - apiVersion: v2
     appVersion: 0.2.0
+    created: "2023-01-22T22:13:56.650377168Z"
+    description: A Helm chart for terraform job resources
+    digest: a7e057460bb8a7551c1e9fc24aadc2d35f4920a846ac8f1f61f4ed23da2c8042
+    name: terraform-jobs
+    type: application
+    urls:
+    - https://github.com/popout-dev/terraform-kube-jobs/releases/download/terraform-jobs-0.3.0/terraform-jobs-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
+    appVersion: 0.2.0
     created: "2023-01-16T21:29:14.323588851Z"
     description: A Helm chart for terraform job resources
     digest: 99ea43b502a3f77ed914b8028a0e0ff57762365c9ad3e5cea3df5ce4f62d3868
@@ -21,4 +31,4 @@ entries:
     urls:
     - https://github.com/popout-dev/terraform-kube-jobs/releases/download/terraform-jobs-0.1.0/terraform-jobs-0.1.0.tgz
     version: 0.1.0
-generated: "2023-01-16T21:29:14.323596351Z"
+generated: "2023-01-22T22:13:56.650386068Z"
